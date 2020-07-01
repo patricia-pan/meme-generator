@@ -5,30 +5,130 @@
     <title>MemeGenerator</title>
 
     <style>
+        body {
+            font-family: Georgia;
+        }
+        
+        /* For centering the meme submission form and submissions. */
+        #memeForm {
+            text-align: center;
+        }
+        
+        /* Container holding the image and the text. */
+        .container {
+            position: relative;
+        }
+
+        .image {
+            max-width:600px;
+            max-height:600px;
+            width: auto;
+            height: auto;
+        }
+
+        /* Placement of top text. */
+        .topText {
+            font-size: 40px;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            position: absolute;
+            top: 1px;
+            left: 4px;
+        }
+
+        /* Placement of bottom text. */
+        .bottomText {
+            font-size: 40px;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            position: absolute;
+            bottom: 4px;
+            left: 4px;
+        }
     </style>
 </head>
 
-<body>
-    <center><section>
-        <label for="URL">Image Link:</label>
-        <input type="text" id="URL" style="width:500px">
-        <br><br>
-        <label for="topText">Top Text: </label>
-        <input type="text" id="topText" style="width:200px">
-        <br><br>
-        <label for="bottomText">Bottom Text: </label>
-        <input type="text" id="bottomText" style="width:200px">
-        <br>
-        <br>
-        <input type="image" id="generateImage" alt="Generate Meme" src="https://i.imgur.com/cUC4bU5.png" style="width:50px; border:2px solid black; border-radius: 4px">
-    </section></center>
 
+<body class="memeGenerator">
     <section>
-        /* var firstName = prompt("What is your first name?");
-        // Now firstName should correspond to whatever the user typed! */
+        <form action="#" id="memeForm">
+            <label for="URL">Image Link:</label>
+            <input type="text" name="URL" id="URL" style="width:500px">
+            <br><br>
+            <label for="topText">Top Text: </label>
+            <input type="text" id="topText" style="width:200px">
+            <br><br>
+            <label for="bottomText">Bottom Text: </label>
+            <input type="text" id="bottomText" style="width:200px">
+            <br><br>
+            <i>Image will automatically resize to fit into a 600px square</i>
+            <br><br>
+            <input type="image" id="submit" alt="Generate Meme" src="https://i.imgur.com/cUC4bU5.png" style="width:50px; border:2px solid black; border-radius: 4px">
+        </form>
+    </section>
+
+    <section id="memeList">
     </section>
 </body>
 
+
 <footer>
+    <script>
+        window.onload = function(){
+            var memeForm = document.getElementById("memeForm"); // Gets the form where user inputs info. 
+            var memeList = document.getElementById("memeList"); // Gets the section underneath the form.
+
+            memeForm.addEventListener("submit", function(event){ // If the user clicks on the submit image/button in the memeForm section.
+                event.preventDefault();
+
+                var newMeme = document.createElement("div"); // Create div to hold each meme: image, text, cancel button.
+                newMeme.classList.add("container");
+                var img = document.createElement("img"); // Create an image based on the URL.
+                img.classList.add("image");
+                img.src = document.getElementById("URL").value;
+                var topText = document.createElement("p"); // Create top text element.
+                topText.classList.add("topText");
+                topText.innerHTML = document.getElementById("topText").value;
+                var bottomText = document.createElement("p"); // Create bottom text element.
+                bottomText.classList.add("bottomText");
+                bottomText.innerHTML = document.getElementById("bottomText").value;
+
+                var removeButton = document.createElement("button"); // Create remove button.
+                removeButton.innerText = "X";
+
+                newMeme.appendChild(img); // Add everything into the container that holds the image + text. 
+                newMeme.appendChild(topText);
+                newMeme.appendChild(bottomText); 
+                newMeme.appendChild(removeButton); // Add button for deleting memes from memeList.
+
+                memeList.appendChild(newMeme); // Add meme to memeList section.
+
+                memeForm.reset();
+            })
+
+            memeList.addEventListener("click", function(event){
+                 if (event.target.tagName.toLowerCase() === 'button') {
+                    event.target.parentNode.remove();
+                }
+            })
+
+        }
+
+
+    </script>
 
 </footer>
+
+<notes>
+<!-- I referenced the below:
+To-do list exercise for submitting forms:
+https://github.com/rithmschool/intermediate_javascript_solutions/tree/master/todo_exercise
+
+Creating an image DOM object:
+https://www.w3schools.com/jsref/dom_obj_image.asp
+
+Formatting text over an image:
+https://www.w3schools.com/howto/howto_css_image_text.asp
+
+Forcing image resize but keeping aspect ratio:
+https://stackoverflow.com/questions/12991351/css-force-image-resize-and-keep-aspect-ratio
+-->
+</notes>
